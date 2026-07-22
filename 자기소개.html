@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>자기소개</title>
+    <link rel="icon" href="./js/파비콘.png" type="image/x-icon" />
+    <style>
+      @font-face {
+        font-family: "GeuriunXGukhanbakGeulbangGuri";
+        src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/2607161334@x-4/x/GriunXHangeul_Banguri-Rg.woff2")
+          format("woff2");
+        font-weight: 400;
+        font-display: swap;
+      }
+      * {
+        font-family: "GeuriunXGukhanbakGeulbangGuri";
+      }
+      .menu {
+        height: 30px;
+        width: 100%;
+
+        display: flex;
+        justify-content: center;
+        gap: 45px;
+        align-items: center;
+        font-size: 20pt;
+        position: fixed;
+        z-index: 1000;
+      }
+      .menu a {
+        text-decoration: none;
+      }
+      .informaion {
+        background-color: rgb(223, 219, 222);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        gap: 100px;
+      }
+      a {
+        color: black;
+      }
+      h1,
+      h2,
+      h3 {
+        color: rgb(119, 26, 119);
+      }
+      h1 {
+        text-align: center;
+      }
+      img {
+        display: inline-block;
+        width: 300px;
+        border-radius: 30%;
+      }
+      .informaion > div {
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .informaion > div {
+        background-color: rgba(185, 160, 207, 0.274);
+        height: 950px;
+        width: 400px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="menu">
+      <a class="category" href="#intro1"><b>소개</b></a>
+
+      <a class="category" href="#intro2"><b>경력</b></a>
+      <a class="category" href="#intro3"><b>취미</b></a>
+      <a class="category" href="#intro4"><b>목표</b></a>
+    </div>
+    <div class="informaion">
+      <div id="intro1">
+        <h1>자기소개</h1>
+        <img src="./js/캐릭커처.png" alt="자기소개 이미지" />
+        <p>이름: JY</p>
+        <p>나이: 만 33세</p>
+        <p>현재 AI엔지니어 교육 수강 중</p>
+      </div>
+      <div id="intro2">
+        <h1>경력</h1>
+        <h3>분석연구원</h3>
+        <img
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvR90kSjBLV7N_ISu-2GCSVnFJdMA9l1OxLMQSkeViUw&s=10"
+          alt="장비 이미지"
+        />
+        <img
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT22Utra9HGmG_CfMLFYbUHj00M0iW6Xxn_QEm6KM8uXw&s=10"
+          alt="결과 이미지"
+        />
+      </div>
+      <div id="intro3">
+        <h1>취미</h1>
+        <img src="./js/수영사진.jpg" alt="수영 이미지" />
+        <p>거북이랑 수영하기</p>
+        <img
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBWztoF5wVJCN5UMppnEXYgizZjrHDeBctql5lhGJVZg&s=10"
+          alt="에어로빅 이미지"
+        />
+        <p>신나는 음악과 함께 에어로빅</p>
+      </div>
+      <div id="intro4">
+        <h1>목표</h1>
+        <h2>AI 엔지니어링을 통해 업무 자동화를 실현!</h2>
+        <img src="./js/캐릭커처1.png" alt="열공 이미지" />
+        <p>9월까지 목표 정하기!</p>
+        <a href="#">맨 위로</a>
+      </div>
+    </div>
+  </body>
+</html>

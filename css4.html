@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <style>
+      html {
+        font-size: 16px;
+      }
+      .parent {
+        font-size: 20px;
+      }
+      .em-child {
+        font-size: 2em;
+      } /* 부모 기준 → 40px */
+      .rem-child {
+        font-size: 2rem;
+      } /* root 기준 → 32px */
+    </style>
+  </head>
+  <body>
+    16px
+    <div class="parent">
+      em: 20px
+      <div class="parent">em: 20px</div>
+      <div class="em-child">em: 40px</div>
+      <div class="rem-child">rem: 32px</div>
+      <div class="rem-child">rem: 32px</div>
+    </div>
+  </body>
+</html>

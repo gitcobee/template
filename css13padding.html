@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>text-overflow 실습</title>
+    <style>
+      .box {
+        display: inline-block;
+        width: 200px;
+        padding: 10px 20px 30px 40px;
+        border: 5px solid black;
+      }
+      .content-box {
+        box-sizing: content-box;
+      } /* 실제 폭 250px */
+      .border-box {
+        box-sizing: border-box;
+      } /* 실제 폭 200px */
+
+      /* 실무 관례 : 전역 border-box */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box content-box">content-box</div>
+    <div class="box border-box">border-box</div>
+  </body>
+</html>
