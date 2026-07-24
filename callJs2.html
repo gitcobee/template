@@ -4,28 +4,155 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Edu+VIC+WA+NT+Hand:wght@400..700&family=Gamja+Flower&family=Gugi&display=swap"
+      rel="stylesheet"
+    />
     <style>
+      .gugi-regular {
+        font-family: "Gugi", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+      }
+      * {
+        font-family: "Gugi", sans-serif;
+      }
+      .container {
+        height: 500px;
+        width: 500px;
+        /* 3. 입체적인 배경: 단색 대신 방사형 그라데이션 + 안팎 그림자로 볼록한 구슬 느낌을 줌 */
+        background: radial-gradient(
+          circle at 30% 30%,
+          #fff3d6 0%,
+          bisque 55%,
+          #d99a4e 100%
+        );
+        box-shadow:
+          /* 좌상단 안쪽 밝은 하이라이트 */
+          inset 12px 12px 30px rgba(255, 255, 255, 0.6),
+          /* 우하단 안쪽 어두운 그림자 -> 오목/볼록한 입체감 */
+          inset -12px -12px 30px rgba(0, 0, 0, 0.25),
+          /* 바깥 그림자: 화면 위로 떠 있는 느낌 */ 0 25px 45px
+            rgba(0, 0, 0, 0.3);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        text-align: center;
+        align-items: center;
+        /*화면 가운데로 위치*/
+        margin: 0 auto;
+        border-radius: 50%;
+      }
+
+      /* 4. 제목/버튼 위치 고정용: 공이 없을 때도 공이 있을 때와 같은 높이를 미리 확보해서
+         내용이 채워져도 flex 배치(space-around)가 재계산되며 위/버튼이 움직이지 않게 함 */
+      #result,
+      #bounus {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        min-height: 60px; /* 공 높이(40px) + 튕기는 애니메이션 여유 공간 */
+      }
+
       .ball {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 40px;
-        height: 40px;
+        width: 60px;
+        height: 60px;
         border-radius: 50%; /* 이게 동그랗게 만드는 핵심 */
 
         color: white;
         font-weight: bold;
+
+        /* 공 자체도 살짝 입체감 있게: 아래쪽 그림자 + 위쪽 하이라이트 */
+        box-shadow:
+          0 4px 6px rgba(0, 0, 0, 0.35),
+          inset 0 2px 3px rgba(255, 255, 255, 0.5);
+
+        /* 2. 공이 나올 때 튕겨나오는 액션: 아래 ballDrop 애니메이션 적용
+           both -> 시작 전(0%)/종료 후(100%) 스타일을 유지해서 어색한 깜빡임 방지 */
+        animation: ballDrop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+      }
+
+      /* 2. 공 튕김 애니메이션: 위에서 떨어지듯 등장 -> 아래로 튀어나갔다가 -> 살짝 위로 튕기고 제자리 */
+      @keyframes ballDrop {
+        0% {
+          transform: translateY(-120px) scale(0.3);
+          opacity: 0;
+        }
+        60% {
+          transform: translateY(10px) scale(1.08);
+          opacity: 1;
+        }
+        80% {
+          transform: translateY(-6px) scale(0.96);
+        }
+        100% {
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      /* 1. 로또 버튼: 글자 크기의 약 3배 크기 + 입체적인(눌리는) 버튼 모양 */
+      #btn {
+        font-size: 1.4rem; /* 버튼 크기의 기준이 되는 글자 크기 */
+        /* padding을 글자 크기(em)의 배수로 줘서 버튼 전체 크기가 글자 크기의 약 3배가 되게 함 */
+        padding: 1em 1em;
+        height: 50px;
+        width: 150px;
+        border: none;
+        border-radius: 16px;
+        font-weight: bold;
+        color: #6b3a00;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+
+        /* 입체감을 주는 그라데이션 배경 (위는 밝게, 아래는 어둡게) */
+        background: linear-gradient(
+          180deg,
+          #ffe9b8 0%,
+          #ffcf6b 50%,
+          #ffb830 100%
+        );
+
+        /* 위쪽 하이라이트 + 아래쪽 두꺼운 그림자로 볼록 튀어나온 버튼처럼 보이게 함 */
+        box-shadow:
+          inset 0 2px 0 rgba(255, 255, 255, 0.7),
+          inset 0 -4px 0 rgba(0, 0, 0, 0.15),
+          0 8px 0 #c9862a,
+          0 12px 20px rgba(0, 0, 0, 0.35);
+
+        transition:
+          transform 0.1s ease,
+          box-shadow 0.1s ease;
+      }
+
+      /* 버튼을 누르는 순간: 아래로 살짝 내려가며 그림자가 줄어들어 실제로 눌리는 느낌을 줌 */
+      #btn:active {
+        transform: translateY(6px);
+        box-shadow:
+          inset 0 2px 0 rgba(255, 255, 255, 0.7),
+          inset 0 -2px 0 rgba(0, 0, 0, 0.15),
+          0 2px 0 #c9862a,
+          0 4px 10px rgba(0, 0, 0, 0.3);
       }
     </style>
   </head>
   <body>
-    <h1>로또생성기</h1>
-    <!--버튼 입력-->
-    <button id="btn">로또 생성기</button>
-    <!--화면에 번호나오게 삽입-->
-    <p id="result"></p>
-    <p id="bounus"></p>
-
+    <div class="container">
+      <h1>LOTTO</h1>
+      <!--버튼 입력-->
+      <button id="btn">CLICK</button>
+      <!--화면에 번호나오게 삽입-->
+      <p id="result"></p>
+      <p id="bounus"></p>
+    </div>
     <script>
       //버튼 위치
       const btn = document.getElementById("btn");
@@ -56,12 +183,14 @@
 
         //이게 있어야 최종적으로 숫자가 화면에 보임
         result.innerHTML = ""; // 이전에 만들어둔 공들을 전부 지움
-        numbers.forEach((num) => {
+        numbers.forEach((num, i) => {
           const ball = document.createElement("span"); // 1. span 하나 생성
           ball.className = "ball";
-          // 2-1. CSS 클래스 부여 (동그라미 스타일 적용용)
+          // 2-1. CSS 클래스 부여 (동그라미 스타일 적용용, ballDrop 튕김 애니메이션 포함)
 
           ball.style.backgroundColor = getRandomColor();
+          // 2-3. 공마다 애니메이션 시작 시각을 살짝 늦춰서 하나씩 순서대로 튕겨나오게 함
+          ball.style.animationDelay = `${i * 0.1}s`;
           ball.textContent = num; // 2-2. 번호 내용 넣기
           result.appendChild(ball); // 3. result(<p id="result">) 안에 붙이기
         });
@@ -76,8 +205,10 @@
         bounus.innerHTML = ""; // 이전에 만들어둔 공들을 전부 지움
         numbers.forEach((num) => {
           const ball = document.createElement("span");
-          ball.className = "ball";
+          ball.className = "ball"; // ballDrop 튕김 애니메이션은 .ball 클래스에 이미 포함되어 있음
           ball.style.backgroundColor = getRandomColor();
+          // 보너스 공은 본번호 6개가 다 튕겨나온 뒤에 나오도록 지연 시간을 줌
+          ball.style.animationDelay = "0.6s";
           ball.textContent = num;
           bounus.appendChild(ball);
         });
