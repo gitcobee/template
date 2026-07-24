@@ -4,21 +4,31 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <style>
+      table {
+        border: 1px solid black;
+        th,
+        td {
+          border: 1px solid blue;
+        }
+        text-align: center;
+        margin: 0 auto;
+        margin-top: 20%;
+      }
+    </style>
   </head>
   <body>
     <div class="heros">
-      <ul>
-        <li id="hero1"></li>
-        <li id="hero2"></li>
-        <li id="hero3"></li>
-        <li id="hero4"></li>
-        <li id="hero5"></li>
-        <li id="hero6"></li>
-        <li id="hero7"></li>
-        <li id="hero8"></li>
-        <li id="hero9"></li>
-        <li id="hero10"></li>
-      </ul>
+      <table id="hero">
+        <tr>
+          <th>순위</th>
+          <th>팀명</th>
+          <th>경기</th>
+          <th>승</th>
+          <th>무</th>
+          <th>패</th>
+        </tr>
+      </table>
     </div>
 
     <script>
@@ -33,26 +43,45 @@
         })
         .then((data) => {
           // 변환된 JSON 객체 사용
-          const divLi1 = document.getElementById("hero1");
-          const divLi2 = document.getElementById("hero2");
-          const divLi3 = document.getElementById("hero3");
-          const divLi4 = document.getElementById("hero4");
-          const divLi5 = document.getElementById("hero5");
-          const divLi6 = document.getElementById("hero6");
-          const divLi7 = document.getElementById("hero7");
-          const divLi8 = document.getElementById("hero8");
-          const divLi9 = document.getElementById("hero9");
-          const divLi10 = document.getElementById("hero10");
-          divLi1.innerHTML = `<strong>종합순위 1위:</strong> ${data.list[0].name}`;
-          divLi2.innerHTML = `<strong>종합순위 2위:</strong> ${data.list[1].name}`;
-          divLi3.innerHTML = `<strong>종합순위 3위:</strong> ${data.list[2].name}`;
-          divLi4.innerHTML = `<strong>종합순위 4위:</strong> ${data.list[3].name}`;
-          divLi5.innerHTML = `<strong>종합순위 5위:</strong> ${data.list[4].name}`;
-          divLi6.innerHTML = `<strong>종합순위 6위:</strong> ${data.list[5].name}`;
-          divLi7.innerHTML = `<strong>종합순위 7위:</strong> ${data.list[6].name}`;
-          divLi8.innerHTML = `<strong>종합순위 8위:</strong> ${data.list[7].name}`;
-          divLi9.innerHTML = `<strong>종합순위 9위:</strong> ${data.list[8].name}`;
-          divLi10.innerHTML = `<strong>종합순위 10위:</strong> ${data.list[9].name}`;
+          const heroTable = document.getElementById("hero");
+
+          // [최적화] 행을 만들 때마다 heroTable.appendChild()로 바로 붙이면
+          // 그때마다 브라우저가 리플로우/리페인트를 다시 계산함.
+          // DocumentFragment는 화면에 그려지지 않는 메모리상의 임시 컨테이너라서,
+          // 여기에 다 모았다가 맨 마지막에 딱 한 번만 실제 DOM에 붙이면 훨씬 효율적임.
+          const fragment = document.createDocumentFragment();
+
+          // [최적화] for(let i=0; i<10; i++) 같은 하드코딩된 반복 대신
+          // data.list.forEach를 사용 -> 데이터 개수가 10개가 아니어도(팀이 늘거나 줄어도) 안전하게 동작
+          data.list.forEach((team) => {
+            const heroTr = document.createElement("tr");
+
+            // [최적화] herosArr에 인덱스로 하나씩 접근하던 방식 대신,
+            // 표시할 값들을 순서대로 배열 하나에 정리해두고 아래에서 한 번에 순회
+            const values = [
+              team.rank.rank,
+              team.nameKo,
+              team.rank.game,
+              team.rank.win,
+              team.rank.draw,
+              team.rank.loss,
+            ];
+
+            // [최적화] values 배열을 순회하며 td를 그때그때 생성 -> 셀 개수가 바뀌어도 코드 수정 불필요
+            values.forEach((value) => {
+              const heroTd = document.createElement("td");
+              // [최적화] innerHTML은 문자열을 HTML로 파싱하는 과정이 추가로 필요함.
+              // 여기는 순수 텍스트만 넣으므로 textContent가 더 빠르고, HTML 삽입에 따른 XSS 위험도 없음
+              heroTd.textContent = value;
+              heroTr.appendChild(heroTd);
+            });
+
+            fragment.appendChild(heroTr); // 아직 화면(DOM)에는 반영 안 됨, fragment에만 임시로 쌓는 단계
+          });
+
+          // [최적화] 반복문 안에서 매번 테이블에 붙이지 않고,
+          // 모든 행이 다 준비된 fragment를 여기서 딱 한 번만 테이블에 반영 -> DOM 반영 횟수 최소화
+          heroTable.appendChild(fragment);
         })
         .catch((error) => {
           // 오류 처리
