@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .ball {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%; /* 이게 동그랗게 만드는 핵심 */
+
+        color: white;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>로또생성기</h1>
+    <!--버튼 입력-->
+    <button id="btn">로또 생성기</button>
+    <!--화면에 번호나오게 삽입-->
+    <p id="result"></p>
+    <p id="bounus"></p>
+
+    <script>
+      //버튼 위치
+      const btn = document.getElementById("btn");
+      //화면 번호 위치
+      const result = document.getElementById("result");
+      const bounus = document.getElementById("bounus");
+      function getRandomColor() {
+        const hue = Math.floor(Math.random() * 360);
+        return `hsl(${hue}, 70%, 50%)`;
+      }
+
+      btn.addEventListener("click", () => {
+        const numbers = [];
+        //while-미리 정해지지 않고 조건에 따라 유동적인 반복에서 사용, 배열6개에서 false
+        while (numbers.length < 6) {
+          //1~45에서 랜덤으로 뽑음, math.radom:0~1사이 소수가 나옴, math.floor: 정수로 변환, +1: 0이나왔을때 1더함
+          const num = Math.floor(Math.random() * 45) + 1;
+          //(!numbers.includes(num)):뽑은 숫자가 동일하지 않으면 ->true
+          if (!numbers.includes(num)) {
+            numbers.push(num);
+          }
+        }
+
+        //오름차순 정렬, a-b: 앞자리숫자가 작은게 앞에 오는걸 방지
+        numbers.sort((a, b) => a - b);
+        //반복 함수 밖에 있어야, 계단식 결과가 아닌 6개 배열만 나옴.
+        //콘솔에 출력값
+
+        //이게 있어야 최종적으로 숫자가 화면에 보임
+        result.innerHTML = ""; // 이전에 만들어둔 공들을 전부 지움
+        numbers.forEach((num) => {
+          const ball = document.createElement("span"); // 1. span 하나 생성
+          ball.className = "ball";
+          // 2-1. CSS 클래스 부여 (동그라미 스타일 적용용)
+
+          ball.style.backgroundColor = getRandomColor();
+          ball.textContent = num; // 2-2. 번호 내용 넣기
+          result.appendChild(ball); // 3. result(<p id="result">) 안에 붙이기
+        });
+      });
+      btn.addEventListener("click", () => {
+        const numbers = [];
+
+        while (numbers.length < 1) {
+          const num = Math.floor(Math.random() * 45) + 1;
+          numbers.push(num);
+        }
+        bounus.innerHTML = ""; // 이전에 만들어둔 공들을 전부 지움
+        numbers.forEach((num) => {
+          const ball = document.createElement("span");
+          ball.className = "ball";
+          ball.style.backgroundColor = getRandomColor();
+          ball.textContent = num;
+          bounus.appendChild(ball);
+        });
+      });
+    </script>
+  </body>
+</html>
